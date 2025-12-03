@@ -1,82 +1,82 @@
 // ==========================================
-//      Система управления персонажем
+//      System zarządzania postacią
 // ==========================================
 
-// Функция создания новой postaci
+// Funkcja tworzenia nowej postaci
 function stworzPostac(name, role) {
-    // Проверяем, что имя минимум 3 символа
+    // Sprawdzamy, czy imię ma minimum 3 znaki
     if (name.length < 3) {
-        console.error("Имя должно быть минимум 3 символа!");
+        console.error("Imię musi mieć minimum 3 znaki!");
         return null;
     }
 
-    // Начальный набор предметов и умений в зависимости от класса
+    // Początkowy zestaw przedmiotów i umiejętności w zależności od klasy
     let startEquipment = {};
     let startSkills = [];
     switch (role.toLowerCase()) {
-        case "wojownik": // воин
-            startEquipment = { weapon: "sword", armor: "shield", items: ["Health potion"] };
-            startSkills = ["Slash", "Block"];
+        case "wojownik": // wojownik
+            startEquipment = { weapon: "miecz", armor: "tarcza", items: ["Mikstura zdrowia"] };
+            startSkills = ["Cięcie", "Blok"];
             break;
-        case "mag": // маг
-            startEquipment = { weapon: "staff", armor: "robe", items: ["Mana potion"] };
-            startSkills = ["Fireball", "Healing field"];
+        case "mag": // mag
+            startEquipment = { weapon: "kostur", armor: "szata", items: ["Mikstura many"] };
+            startSkills = ["Kula ognia", "Pole lecznicze"];
             break;
-        default: // остальные классы
-            startEquipment = { weapon: "dagger", armor: "cloth", items: [] };
+        default: // inne klasy
+            startEquipment = { weapon: "sztylet", armor: "tkanina", items: [] };
             startSkills = [];
     }
 
-    // Создаем объект postaci
+    // Tworzymy obiekt postaci
     return {
-        name: name, // Имя персонажа
-        role: role, // Класс персонажа
-        level: 1, // Уровень
-        skills: startSkills, // Умения
-        equipment: startEquipment // Экипировка
+        name: name, // Imię postaci
+        role: role, // Klasa postaci
+        level: 1, // Poziom
+        skills: startSkills, // Umiejętności
+        equipment: startEquipment // Ekwipunek
     };
 }
 
-// Функция добавления предмета в ekwipunek
+// Funkcja dodawania przedmiotu do ekwipunku
 function dodajPrzedmiot(character, item) {
-    character.equipment.items.push(item); // добавляем в массив предметов
+    character.equipment.items.push(item); // dodajemy do tablicy przedmiotów
 }
 
-// Функция обучения новой umiejętności
+// Funkcja nauki nowej umiejętności
 function nauczUmiejetnosci(character, newSkill) {
-    if (character.skills.length >= 5) { // проверка лимита 5 умений
-        console.warn("Персонаж не может иметь больше 5 умений!");
+    if (character.skills.length >= 5) { // sprawdzenie limitu 5 umiejętności
+        console.warn("Postać nie może mieć więcej niż 5 umiejętności!");
         return;
     }
-    character.skills.push(newSkill); // добавляем умение
+    character.skills.push(newSkill); // dodajemy umiejętność
 }
 
-// Функция повышения уровня postaci
+// Funkcja awansowania postaci
 function awansuj(character) {
-    character.level += 1; // увеличиваем уровень на 1
+    character.level += 1; // zwiększamy poziom o 1
 }
 
-// Функция вывода описания персонажа
+// Funkcja wyświetlania opisu postaci
 function opisPostaci(character) {
     let desc = `=== KARTA POSTACI ===\n`;
-    desc += `Имя: ${character.name}\n`;
-    desc += `Класс: ${character.role}\n`;
-    desc += `Уровень: ${character.level}\n\n`;
+    desc += `Imię: ${character.name}\n`;
+    desc += `Klasa: ${character.role}\n`;
+    desc += `Poziom: ${character.level}\n\n`;
 
-    desc += "Умения:\n";
-    for (let skill of character.skills) { // перебор умений
+    desc += "Umiejętności:\n";
+    for (let skill of character.skills) { // iteracja po umiejętnościach
         desc += `- ${skill}\n`;
     }
 
     desc += "\nEkwipunek:\n";
-    desc += `Оружие: ${character.equipment.weapon}\n`;
-    desc += `Броня: ${character.equipment.armor}\n`;
-    desc += "Предметы:\n";
-    for (let item of character.equipment.items) { // перебор предметов
+    desc += `Broń: ${character.equipment.weapon}\n`;
+    desc += `Zbroja: ${character.equipment.armor}\n`;
+    desc += "Przedmioty:\n";
+    for (let item of character.equipment.items) { // iteracja po przedmiotach
         desc += `- ${item}\n`;
     }
 
-    return desc; // возвращаем текст описания
+    return desc; // zwracamy tekst opisu
 }
 
 // ==========================================
