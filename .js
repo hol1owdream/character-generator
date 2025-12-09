@@ -1,70 +1,73 @@
 // ==========================================
-//      System zarządzania postacią
+//      Система управления персонажем
 // ==========================================
 
-// Funkcja tworzenia nowej postaci
+// Функция создания новой персонажа
 function stworzPostac(name, role) {
-    // Sprawdzamy, czy imię ma minimum 3 znaki
+    // Проверяем, что имя состоит минимум из 3 символов
     if (name.length < 3) {
         console.error("Imię musi mieć minimum 3 znaki!");
         return null;
     }
 
-    // Początkowy zestaw przedmiotów i umiejętności w zależności od klasy
+    // Начальный набор предметов и умений в зависимости от класса
     let startEquipment = {};
     let startSkills = [];
+
     switch (role.toLowerCase()) {
-        case "wojownik": // wojownik
+        case "wojownik": // класс «wojownik»
             startEquipment = { weapon: "miecz", armor: "tarcza", items: ["Mikstura zdrowia"] };
             startSkills = ["Cięcie", "Blok"];
             break;
-        case "mag": // mag
+        case "mag": // класс «mag»
             startEquipment = { weapon: "kostur", armor: "szata", items: ["Mikstura many"] };
             startSkills = ["Kula ognia", "Pole lecznicze"];
             break;
-        default: // inne klasy
+        default: // неизвестная или общая роль
             startEquipment = { weapon: "sztylet", armor: "tkanina", items: [] };
             startSkills = [];
     }
 
-    // Tworzymy obiekt postaci
+    // Создаем объект персонажа
     return {
-        name: name, // Imię postaci
-        role: role, // Klasa postaci
-        level: 1, // Poziom
-        skills: startSkills, // Umiejętności
-        equipment: startEquipment // Ekwipunek
+        name: name, // имя персонажа
+        role: role, // класс персонажа
+        level: 1, // уровень
+        skills: startSkills, // умения
+        equipment: startEquipment // экипировка
     };
 }
 
-// Funkcja dodawania przedmiotu do ekwipunku
+// Функция добавления предмета в инвентарь
 function dodajPrzedmiot(character, item) {
-    character.equipment.items.push(item); // dodajemy do tablicy przedmiotów
+    character.equipment.items.push(item); // добавляем предмет в список предметов
 }
 
-// Funkcja nauki nowej umiejętności
+// Функция изучения нового умения
 function nauczUmiejetnosci(character, newSkill) {
-    if (character.skills.length >= 5) { // sprawdzenie limitu 5 umiejętności
+    // Проверяем лимит: максимум 5 умений
+    if (character.skills.length >= 5) {
         console.warn("Postać nie może mieć więcej niż 5 umiejętności!");
         return;
     }
-    character.skills.push(newSkill); // dodajemy umiejętność
+    character.skills.push(newSkill); // добавляем новое умение
 }
 
-// Funkcja awansowania postaci
+// Функция повышения уровня
 function awansuj(character) {
-    character.level += 1; // zwiększamy poziom o 1
+    character.level += 1; // увеличиваем уровень на 1
 }
 
-// Funkcja wyświetlania opisu postaci
+// Функция генерации описания персонажа
 function opisPostaci(character) {
+    // Формируем текст описания
     let desc = `=== KARTA POSTACI ===\n`;
     desc += `Imię: ${character.name}\n`;
     desc += `Klasa: ${character.role}\n`;
     desc += `Poziom: ${character.level}\n\n`;
 
     desc += "Umiejętności:\n";
-    for (let skill of character.skills) { // iteracja po umiejętnościach
+    for (let skill of character.skills) { // перебираем умения
         desc += `- ${skill}\n`;
     }
 
@@ -72,11 +75,11 @@ function opisPostaci(character) {
     desc += `Broń: ${character.equipment.weapon}\n`;
     desc += `Zbroja: ${character.equipment.armor}\n`;
     desc += "Przedmioty:\n";
-    for (let item of character.equipment.items) { // iteracja po przedmiotach
+    for (let item of character.equipment.items) { // перебираем предметы
         desc += `- ${item}\n`;
     }
 
-    return desc; // zwracamy tekst opisu
+    return desc; // возвращаем описание персонажа
 }
 
 // ==========================================
@@ -90,7 +93,7 @@ const mojaPostac = stworzPostac("Gandalf", "Mag");
 dodajPrzedmiot(mojaPostac, "Różdżka");
 dodajPrzedmiot(mojaPostac, "Księga zaklęć");
 
-// Обучаем новому умению
+// Изучаем новое умение
 nauczUmiejetnosci(mojaPostac, "Teleportacja");
 
 // Повышаем уровень
@@ -103,45 +106,44 @@ console.log(opisPostaci(mojaPostac));
 //          ДОПОЛНИТЕЛЬНЫЕ ТЕСТЫ
 // ==========================================
 
-console.log("\n=== ТЕСТЫ ВАЛИДАЦИИ ===");
-
-// Тест: Имя короче 3 символов
-console.log("Тест: Имя 'Ab' (короче 3 символов)");
+// Тестируем валидацию имени
+console.log("\n=== TESTY WALIDACJI ===");
+console.log("Test: Imię 'Ab' (za krótkie)");
 const invalidChar = stworzPostac("Ab", "Mag");
-console.log("Результат:", invalidChar); // Должен быть null
+console.log("Wynik:", invalidChar); // null
 
-// Тест: Лимит умений (5 умений)
-console.log("\nТест: Лимит умений (5 умений)");
+// Тестируем лимит умений
+console.log("\nTest: Limit umiejętności (5)");
 const testChar = stworzPostac("Test", "Mag");
 nauczUmiejetnosci(testChar, "Skill1");
 nauczUmiejetnosci(testChar, "Skill2");
 nauczUmiejetnosci(testChar, "Skill3");
 nauczUmiejetnosci(testChar, "Skill4");
-nauczUmiejetnosci(testChar, "Skill5"); // Должен добавить
-nauczUmiejetnosci(testChar, "Skill6"); // Не должен добавить, предупреждение
-console.log("Умения после попытки добавить 6-е:", testChar.skills);
+nauczUmiejetnosci(testChar, "Skill5");
+nauczUmiejetnosci(testChar, "Skill6"); // не добавит
+console.log("Umiejętności:", testChar.skills);
 
-// Тест: Разные роли - Wojownik
-console.log("\nТест: Роль 'wojownik'");
+// Тестируем роль wojownik
+console.log("\nTest: Rola 'wojownik'");
 const wojownik = stworzPostac("Warrior", "wojownik");
-console.log("Оружие:", wojownik.equipment.weapon); // sword
-console.log("Броня:", wojownik.equipment.armor); // shield
-console.log("Умения:", wojownik.skills); // ["Slash", "Block"]
+console.log("Broń:", wojownik.equipment.weapon);
+console.log("Zbroja:", wojownik.equipment.armor);
+console.log("Umiejętności:", wojownik.skills);
 
-// Тест: Неизвестная роль
-console.log("\nТест: Неизвестная роль 'Unknown'");
+// Тестируем неизвестную rolę
+console.log("\nTest: Nieznana rola");
 const unknown = stworzPostac("Unknown", "Unknown");
-console.log("Оружие:", unknown.equipment.weapon); // dagger
-console.log("Броня:", unknown.equipment.armor); // cloth
-console.log("Умения:", unknown.skills); // []
+console.log("Broń:", unknown.equipment.weapon);
+console.log("Zbroja:", unknown.equipment.armor);
+console.log("Umiejętności:", unknown.skills);
 
-// Тест: Множественные повышения уровня
-console.log("\nТест: Множественные повышения уровня");
+// Тестируем многократное повышение уровня
+console.log("\nTest: Wielokrotne awanse");
 awansuj(wojownik);
 awansuj(wojownik);
-console.log("Уровень после 2 повышений:", wojownik.level); // 3
+console.log("Poziom:", wojownik.level);
 
-// Тест: Добавление предметов и вывод описания
-console.log("\nТест: Добавление предметов и вывод описания");
+// Тестируем добавление предметов и описание
+console.log("\nTest: Ekwipunek + opis");
 dodajPrzedmiot(wojownik, "Extra Item");
 console.log(opisPostaci(wojownik));
